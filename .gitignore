@@ -1,6 +1,9 @@
 ### Python template
 .env
 inputs/real
+saver.py
+
+.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
