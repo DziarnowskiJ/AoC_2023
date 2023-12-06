@@ -83,3 +83,41 @@ Card 2    --> 2 matches       --> 3, 4        --> 2
 Card 3    --> 1 match         --> 4           --> 4
 Card 4    --> 0 matches       --> None        --> 8   
 ```
+## [Day 5: If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5)
+Challenge was about modifying values in list of numbers based on supplied ranges.
+ 
+Input could be considered as dictionary or a map, where instead of a simple key, 
+the key was a range of numbers. Similarly, was with the value. 
+Each map contained lines with 3 values: destination_category, source_category and range_length.
+This is ilustrated below:
+```
+seeds: 79 14 55 13
+
+seed-to-soil map:           key     -> value
+50 98 2                 --> [98-99] -> [50-51]
+52 50 48                --> [50-97] -> [52-99]
+
+soil-to-fertilizer map:
+0 15 37                 --> [15-51] -> [0-36]
+37 52 2                 --> [52-53] -> [37-38]
+39 0 15                 --> [0-14]  -> [39-53]
+```
+
+First part of the task was to determine the smallest output number 
+after applying all maps to all listed seeds.
+```
+seeds: 79 14 55 13
+
+Seed 79:
+      └┐
+Apply 79 to 'seed-to-soil map' --> 81
+       ┌───────────────────────────┘
+Apply 81 to 'soil-to-fertilizer map' --> 81
+```
+Second part was similar, but introduced a significant twist - 
+seeds instead of individual values had to be considered in pairs and created ranges.
+Where similarly as before with maps, first value would be a lower bound of a range
+and second was the range_length:  
+```
+seeds: 79 14 55 13  --> seeds [79-93] [55-67]
+```
