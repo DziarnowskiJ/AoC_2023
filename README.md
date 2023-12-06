@@ -121,3 +121,43 @@ and second was the range_length:
 ```
 seeds: 79 14 55 13  --> seeds [79-93] [55-67]
 ```
+## [Day 6: Wait For It](https://adventofcode.com/2023/day/6)
+Simple problem about finding a smallest number in a range that fulfills requirement
+
+Challenge introduced idea of toy boat races where the button on a boat had to be pressed for
+*x* amount of time, for the boat to travel with speed of *x*. Input showed the required time
+to complete a race and the distance that needs to be beaten. 
+```
+Time:      7  15   30
+Distance:  9  40  200
+```
+Part 1 required to determine number of ways that each race can be beaten. 
+For example first race could be won in 4 ways:
+```
+Hold button time    Total distance    Race won
+0                   0                 False
+1                   6                 False
+2                   10                True
+3                   12                True
+4                   12                True
+5                   10                True
+6                   6                 False
+7                   0                 False
+
+-----------------------> True = 4, False = 4
+```
+Second part removed whitespaces between numbers converting it to one
+long race. Surprisingly, my naive approach used for part 1 was still feasible,
+and returns the answer in about 10s. However, by using interval search approach, 
+it is possible to get the process with O(log(n)) time complexity.
+
+Sample race for part two: 
+```
+Time:      71530
+Distance:  940200
+
+-> Shortest button hold time to win is 14
+-> Longest is 71516
+---> Since all hold times beteeen shortest and longest time will result in win
+     it gives 71503 ways of winning  
+```
