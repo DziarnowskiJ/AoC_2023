@@ -161,3 +161,25 @@ Distance:  940200
 ---> Since all hold times beteeen shortest and longest time will result in win
      it gives 71503 ways of winning  
 ```
+## [Day 7: Camel Cards](https://adventofcode.com/2023/day/7)
+Sorting problem based on poker-hand class
+
+This challenge involved reading input as hands of cards. The goal was to sort 
+hands from weakest to strongest based on poker formations and then returning
+the bid multiplied by hand's rank (position after sorting).
+```
+Card  Bid --> Rank --> Winning
+32T3K 765     1        765 
+T55J5 684     4        2736
+KK677 28      3        84
+KTJJT 220     2        440
+QQQJA 483     5        2415
+
+---> Sum of winnings: 6440
+```
+Second part introduced new rule in form of replacing Jack with Joker. Rule stated 
+that Joker acts like a wildcard when it comes to determining formation,
+but has the lowest numerical value. This meant that *JKKT9* was weaker than *KK6TT* in first part 
+(*one pair* vs *two pairs*) but in part two it was considered as stronger hand 
+because *J* acts like *K* making it *three-of-a-kind*. However, hand *JJJJJ* is weaker than *22222*
+because *J* has lower numerical value than *2*.
