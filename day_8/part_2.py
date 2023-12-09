@@ -69,46 +69,6 @@ def process(tokens_line):
     return lcm_arr(A_to_Z)
 
 
-def explanation(tokens_line):
-    movement_map = tokens_to_dict(tokens_line)
-
-    def find_path_X(m_map, lrs_text, start_pos):
-        lrs = [*lrs_text[0][1]]
-        orig_lrs = lrs.copy()
-
-        position = start_pos
-        counter = 0
-        start = True
-        while not position.endswith('Z') or start:
-            start = False
-            counter += 1
-            if len(lrs) == 0:
-                lrs = orig_lrs.copy()
-            cur_lrs = lrs.pop(0)
-            position = m_map[position][0 if cur_lrs == 'L' else 1]
-        return counter, position
-
-    a_dict = dict()
-    for a in [x for x in movement_map.keys() if x.endswith('A')]:
-        a_dict[a] = find_path_X(movement_map, tokens_line[0], a)
-
-    z_dict = dict()
-    for z in [x for x in movement_map.keys() if x.endswith('Z')]:
-        z_dict[z] = find_path_X(movement_map, tokens_line[0], z)
-
-    print("EXPLANATION:")
-
-    print("Because of how the input is designed, nodes ending with 'Z'\n"
-          "when searching to next finish node loop back to themselves.\n"
-          "Additionally, it takes them the same number of steps that \n"
-          "starting nodes (ending with 'A') need to get to them.\n\n"
-          "This is shown below:")
-    for key, val in a_dict.items():
-        print(f"{key} --> {val[1]} ({val[0]} steps) & {val[1]} --> next '..Z' = {z_dict[val[1]][1]} ({z_dict[val[1]][0]} steps)")
-
-    print(f"So the answer is the least common multiplier of all steps: {process(tokens_line)}\n")
-
-explanation(token_sample_lines)
 print("Sample output:", process(token_sample_lines))
 print("Answer", process(token_lines))
 
