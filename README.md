@@ -116,7 +116,7 @@ Apply 81 to 'soil-to-fertilizer map' --> 81
 ```
 Second part was similar, but introduced a significant twist - 
 seeds instead of individual values had to be considered in pairs and created ranges.
-Where similarly as before with maps, first value would be a lower bound of a range
+Similarly as before with maps, first value would be a lower bound of a range
 and second was the range_length:  
 ```
 seeds: 79 14 55 13  --> seeds [79-93] [55-67]
@@ -131,7 +131,7 @@ to complete a race and the distance that needs to be beaten.
 Time:      7  15   30
 Distance:  9  40  200
 ```
-Part 1 required to determine number of ways that each race can be beaten. 
+Part one required to determine number of ways that each race can be beaten. 
 For example first race could be won in 4 ways:
 ```
 Hold button time    Total distance    Race won
@@ -183,3 +183,102 @@ but has the lowest numerical value. This meant that *JKKT9* was weaker than *KK6
 (*one pair* vs *two pairs*) but in part two it was considered as stronger hand 
 because *J* acts like *K* making it *three-of-a-kind*. However, hand *JJJJJ* is weaker than *22222*
 because *J* has lower numerical value than *2*.
+
+## [Day 8: Haunted Wasteland](https://adventofcode.com/2023/day/8)
+Directed graph traversal problem
+
+This challenge's input represents the structure of the directed graph, 
+where from each node traversal is possible to only two others. First line
+of the input determined which of these nodes should be chosen as next one to move to
+(*L* means the first of the two, and *R* the second) 
+and worked like circular list so used direction is moved to the end.
+```
+LRLR
+
+AAA = (CCB, XXX)
+CCB = (XXX, ZZZ)
+ZZZ = (CCB, XXX)
+DDA = (DDB, XXX)
+DDB = (DDC, DDC)
+DDC = (DDZ, DDZ)
+DDZ = (DDB, DDB)
+XXX = (XXX, XXX)
+```
+Part one required to find the number of steps required to get from node *AAA* to *ZZZ*.
+```
+Current node  Directions list  Direction  Options     Next node
+AAA           [LRLR]           L          (CCB, XXX)  CCB
+CCB           [RLRL]           R          (XXX, ZZZ)  ZZZ
+ZZZ           [LRLR]           L          (CCB, XXX)  ---
+
+---> Number of steps: 2             
+```
+Second part increased the difficulty by changing the way starting and nodes are determined.
+For this, each node ending with *A* was a starting position and each ending with *Z* was final node.
+Now, simultaneously starting as each starting position each path needed to end at the same time.
+```
+Step  Current nodes  Direction  Options     Next node
+
+1     AAA            L          (CCB, XXX)  CCB
+      DDA            L          (DDB, XXX)  DDB
+      
+2     CCB            R          (XXX, ZZZ)  ZZZ ┬─ only one final pos.
+      DDB            R          (DDC, DDC)  DDC ┘  --> continue
+      
+3     ZZZ            L          (CCB, XXX)  CCB ┬─ only one final pos.
+      DDC            L          (DDZ, DDZ)  DDZ ┘  --> continue   
+....
+6     CCB            R          (XXX, ZZZ)  ZZZ ┬─ both final positions
+      DDC            R          (DDZ, DDZ)  DDZ ┘  --> finish  
+
+---> Number of steps: 6 
+```
+The naive solution for finding number of steps by simply counting them until
+final positions would take to much time. However, the input was constructed in
+such a way that nodes ending with 'Z' when searching to next finish node loop back to themselves.
+Additionally, it takes them the same number of steps that 
+starting nodes (ending with 'A') need to get to them.
+```
+CCA --> CCZ (2 steps) & CCZ --> next '..Z' = CCZ (2 steps)
+DDA --> DDZ (3 steps) & DDZ --> next '..Z' = DDZ (3 steps)
+```
+Because of that, the answer for this part is the *least common multiplier*
+of all numbers of steps.
+
+## [Day 9: Mirage Maintenance](https://adventofcode.com/2023/day/9)
+Simple problem involving lists recursively creating new lists
+
+The problem required to predict the next value from a sequence of numbers.
+To do this, it was needed to find differences between each adjacent value in a list and 
+by doing so, create a new list. Recursively continue the process until the resulting list 
+consists only of *0*s. Then *0* is added to the list and by climbing up the lists next value is 
+predicted by adding last item of the list to the last item of the list below.
+
+Input consisted of multiple lines of numbers, here is the example for one of them:
+```
+Line: 10 13 16 21 30 45
+  
+10  13  16  21  30  45 ────────────┬─> 68 (23 + 45)
+   3   3   5   9  15 ──────────┬─> 23 (8 + 15)
+     0   2   4   6 ────────┬─> 8 (2 + 6)
+       2   2   2 ──────┬─> 2 (0 + 2)
+         0   0 ──> add 0
+         
+--> Predicted value: 68
+```
+Part two of the problem was very similar to part one, with the only difference
+that the extrapolated was done backwards. This could be done by modifying algorithm
+from part one to take first value instead of the last one and subtract first value from the list below.
+```
+Line: 10 13 16 21 30 45
+
+(10 - 5) 5 <─┬───── 10  13  16  21  30  45
+  (3 - (-2)) 5 <─┬──  3   3   5   9  15
+      (0 - 2) -2 <─┬─── 0   2   4   6
+          (2 - 0) 2 <─┬─  2   2   2
+                  add 0 <── 0   0
+
+--> Predicted value: 5
+```
+Alternatively, solution for part two could be achieved by mirroring the original list and simply using 
+algorithm from part one.
