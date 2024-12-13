@@ -282,3 +282,11 @@ Line: 10 13 16 21 30 45
 ```
 Alternatively, solution for part two could be achieved by mirroring the original list and simply using 
 algorithm from part one.
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
