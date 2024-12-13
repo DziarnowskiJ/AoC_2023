@@ -49,13 +49,13 @@ def get_nodes(full_graph: dict[str, [str]], node: str):
     
 def process(tokens_line, edges_to_remove):
     # print edges to use in visual graphs
-    for token in tokens_line:
-        for node, conn in token.items():
-            for cn in conn:
-                # graphviz
-                # print(f'{node}->{cn} [tooltip="{node}->{cn}"]')
-                # mermaid
-                print(f'{node}-->{cn};')
+    # for token in tokens_line:
+    #     for node, conn in token.items():
+    #         for cn in conn:
+    #             # graphviz
+    #             # print(f'{node}->{cn} [tooltip="{node}->{cn}"]')
+    #             # mermaid
+    #             # print(f'{node}-->{cn};')
 
     full_graph = dict()
     for token in tokens_line:
